@@ -32,3 +32,30 @@ jobs:
       - name: Run Tests
         working-directory: services/node/api-node
         run: task test
+
+  test-go:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup golang
+        uses: actions/setup-go@7a3fe6cf4cb3a834922a1244abfce67bcef6a0c5 # v6.2.0
+        with:
+          go-version-file: services/go/api-golang/go.mod
+          cache-dependency-path: services/go/api-golang/go.sum
+
+      - name: Install task
+        uses: supplypike/setup-bin@1fafb085795af4a3f183502f3a9dffa8f7b83217 # v5.0.0
+        with:
+          uri: "https://github.com/go-task/task/releases/download/v3.48.0/task_linux_amd64.tar.gz"
+          name: task
+          version: v3.48.0
+
+      - name: Install golang dependancies
+        working-directory: services/go/api-golang
+        run: task install-ci
+
+      - name: Run Tests
+        working-directory: services/go/api-golang
+        run: task test
