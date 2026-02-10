@@ -15,6 +15,7 @@ jobs:
             "services/node/api-node",
             "services/react/client-react",
             "services/go/api-golang",
+            "services/python/load-generator-python",
           ]
 
     steps:
@@ -35,6 +36,18 @@ jobs:
         with:
           go-version-file: "${{ matrix.service }}/go.mod"
           cache-dependency-path: "${{ matrix.service }}/go.sum"
+
+      - name: Setup Poetry
+        if: startsWith(matrix.service, 'services/python/')
+        uses: snok/install-poetry@76e04a911780d5b312d89783f7b1cd627778900a # v1.4.1
+
+      - name: Setup Python
+        if: startsWith(matrix.service, 'services/python/')
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6.2.0
+        with:
+          python-version-file: "${{ matrix.service }}/pyproject.toml"
+          cache: poetry
+          cache-dependency-path: "${{ matrix.service }}/poetry.lock"
 
       - name: Install task
         uses: supplypike/setup-bin@1fafb085795af4a3f183502f3a9dffa8f7b83217 # v5.0.0
