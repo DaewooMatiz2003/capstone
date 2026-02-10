@@ -16,6 +16,9 @@ includes:
   api-golang-migrator:
     taskfile: ./services/other/api-golang-migrator/Taskfile.yaml
     dir: ./services/other/api-golang-migrator
+  test:
+    taskfile: ./.github/workflows/test/Taskfile.yaml
+    dir: ./.github/workflows/test
 
 vars:
   DATABASE_URL: "postgres://postgres:foobarbaz@localhost:5432/postgres"

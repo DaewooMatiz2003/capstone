@@ -1,0 +1,34 @@
+---
+name: Run Tests
+
+on: 
+  workflow_dispatch:
+
+jobs:
+  test-node:
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@6044e13b5dc448c55e2357c09f80417699197238 # v6.2.0
+        with:
+          node-version-file: services/node/api-node/package.json
+          cache: npm
+          cache-dependency-path: services/node/api-node/package-lock.json
+
+      - name: Install task
+        uses: supplypike/setup-bin@1fafb085795af4a3f183502f3a9dffa8f7b83217 # v5.0.0
+        with:
+          uri: "https://github.com/go-task/task/releases/download/v3.48.0/task_linux_amd64.tar.gz"
+          name: task
+          version: v3.48.0
+
+      - name: Install node dependancies
+        working-directory: services/node/api-node
+        run: task install-ci
+
+      - name: Run Tests
+        working-directory: services/node/api-node
+        run: task test
