@@ -57,11 +57,11 @@ jobs:
       - name: Check diff
         run: git --no-pager diff
 
-      - name: Commit and push
+      - name: Commit and push (via Task)
         if: ${{ !env.ACT }}
         working-directory: ${{ inputs.service }}
         run: |
           task utils:git:commit-push \
-            COMMIT_MSG=${{ steps.generate-commit-message.outputs.commit_message }} \
+            COMMIT_MSG="${{ steps.generate-commit-message.outputs.commit_message }}" \
             BRANCH=main
 
