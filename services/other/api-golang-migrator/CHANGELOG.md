@@ -2,7 +2,6 @@
 
 ## [1.3.1](https://github.com/sidpalas/capstone/compare/services/other/api-golang-migrator@1.3.0...services/other/api-golang-migrator@1.3.1) (2025-09-17)
 
-
 ### Chores
 
 * **services/other/api-golang-migrator:** Synchronize apis-and-db versions
