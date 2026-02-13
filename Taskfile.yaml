@@ -19,6 +19,9 @@ includes:
   test:
     taskfile: ./.github/workflows/test/Taskfile.yaml
     dir: ./.github/workflows/test
+  build-push:
+    taskfile: ./.github/workflows/build-push/Taskfile.yaml
+    dir: ./.github/workflows/build-push
 
 vars:
   DATABASE_URL: "postgres://postgres:foobarbaz@localhost:5432/postgres"
