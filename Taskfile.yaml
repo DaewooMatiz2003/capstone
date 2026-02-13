@@ -22,6 +22,9 @@ includes:
   build-push:
     taskfile: ./.github/workflows/build-push/Taskfile.yaml
     dir: ./.github/workflows/build-push
+  update-gitops-manifests:
+    taskfile: ./.github/workflows/update-gitops-manifests/Taskfile.yaml
+    dir: ./.github/workflows/update-gitops-manifests
 
 vars:
   DATABASE_URL: "postgres://postgres:foobarbaz@localhost:5432/postgres"

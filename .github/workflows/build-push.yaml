@@ -27,9 +27,6 @@ on:
         required: false
         type: string
 
-permissions:
-  packages: write
-
 jobs:
   filter:
     runs-on: ubuntu-24.04
@@ -68,6 +65,11 @@ jobs:
     runs-on: ubuntu-24.04
     needs: filter
     if: needs.filter.outputs.services != '[]' && needs.filter.outputs.services != ''
+    permissions:
+      contents: read
+      packages: write     # used to push to GHCR
+      actions: write      # used to trigger deploy workflow
+
     strategy:
       fail-fast: false
       matrix:
@@ -128,3 +130,13 @@ jobs:
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Trigger deploy workflow
+        if: ${{ !env.ACT }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh workflow run update-gitops-manifests.yaml \
+            -f service=${{ matrix.service }} \
+            -f version=${{ steps.image-tag.outputs.version }} \
+            -f environment=${{ needs.filter.outputs.environment }}
