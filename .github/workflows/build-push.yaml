@@ -116,13 +116,14 @@ jobs:
           fi
           echo "version=${version}" >> $GITHUB_OUTPUT
           echo "image_tag=${image_tag}" >> $GITHUB_OUTPUT
+          echo "ghcr_image_tag=ghcr.io/${image_tag,,}" >> $GITHUB_OUTPUT
 
       - name: Build and push the image
         uses: docker/build-push-action@263435318d21b8e681c14492fe198d362a7d2c83 # v6.18.0
         with:
           context: ${{ matrix.service }}
           push: ${{ !env.ACT }}
-          tags: "ghcr.io/${{ steps.image-tag.outputs.image_tag }}"
+          tags: ${{ steps.image-tag.outputs.ghcr_image_tag }}
           platforms: linux/amd64
           cache-from: type=gha
           cache-to: type=gha,mode=max
